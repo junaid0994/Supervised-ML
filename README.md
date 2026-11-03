@@ -16,6 +16,9 @@ Supervised-ML/
 ├── SVM.ipynb
 ├── Decision_Tree.ipynb
 ├── Random_Forest.ipynb
+├── Adaboost.ipynb
+├── Gradient_Boosting.ipynb
+├── Voting_and_stacking.ipynb
 └── README.md
 ```
 
@@ -107,6 +110,16 @@ Preprocessing in both notebooks: median imputation for `age`, most-frequent impu
 
 The Random Forest and Bagging models do not set `random_state`, so their scores can change slightly between runs.
 
+### Ensemble methods: boosting, voting and stacking (synthetic data)
+
+Goal: combine several models to get better predictions than a single model. These notebooks use data generated with scikit-learn (`make_classification` and `make_regression`), so no dataset download is needed. All use an 80/20 split with `random_state=42`.
+
+| Notebook | What it covers |
+| --- | --- |
+| `Adaboost.ipynb` | `AdaBoostClassifier` with decision tree stumps (`max_depth=1`) as weak learners, 100 estimators. Each stump focuses on the mistakes of the previous one. Evaluated with accuracy and a classification report. |
+| `Gradient_Boosting.ipynb` | `GradientBoostingRegressor` (`learning_rate=0.05`, 200 estimators, `subsample=0.8`, `max_depth=3`) evaluated with R², and `GradientBoostingClassifier` (`learning_rate=0.1`, 150 estimators, `max_depth=3`) evaluated with accuracy. Trees are added one by one, each fixing the errors of the ensemble so far. |
+| `Voting_and_stacking.ipynb` | `VotingClassifier` (default hard voting) and `StackingClassifier`, both built from Logistic Regression, SVC and a decision tree (`max_depth=3`). Voting takes a majority vote of the models. Stacking trains a final model on their predictions. Evaluated with accuracy and a classification report. |
+
 ## Concepts practiced
 
 - Train/test split and reproducibility with `random_state`
@@ -122,6 +135,8 @@ The Random Forest and Bagging models do not set `random_state`, so their scores 
 - SVM kernels (linear, polynomial, RBF) for classification and regression
 - Controlling tree depth to reduce overfitting
 - Ensemble methods: Random Forest, Bagging and the out-of-bag (OOB) score
+- Boosting: AdaBoost and Gradient Boosting (learning rate, number of estimators, subsampling)
+- Voting and Stacking classifiers
 
 ## Setup
 
@@ -150,6 +165,7 @@ The notebooks load them with `pd.read_csv("insurance.csv")` and `pd.read_csv("he
 No download is needed for the rest:
 
 - Iris and Diabetes load from scikit-learn (`datasets.load_iris`, `datasets.load_diabetes`).
+- The ensemble notebooks generate their data with `make_classification` and `make_regression`.
 - Titanic loads with `sns.load_dataset("titanic")`, which needs an internet connection the first time.
 
 **4. Run**
